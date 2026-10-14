@@ -47,7 +47,7 @@ with tempfile.TemporaryDirectory(prefix="magic-hotspot-package-check-") as temp:
             assert "magic-hotspot/" + relative in names, relative
         assert not any("/target/" in n or "/work/" in n or "/outputs/" in n
                        or n.startswith("magic-hotspot/magic-usb/bin/") for n in names)
-        assert "magic-hotspot/magic-usb/package.sh" not in names
+        assert "magic-hotspot/magic-usb/package.py" in names
         source.extractall(temp / "source")
     root = temp / "source/magic-hotspot"
     run("cargo", "check", "--locked", "--offline", "--bin", "magic-hotspot",
@@ -57,4 +57,4 @@ with tempfile.TemporaryDirectory(prefix="magic-hotspot-package-check-") as temp:
         str(temp / "usb-target"), cwd=root)
     assert (temp / "usb-target/debug/magic-usb").is_file()
     assert (temp / "usb-target/debug/csr8510").is_file()
-print("PASS: unified Debian payload/checksums, migration metadata, GPL license, complete source and clean Rust builds.")
+print("PASS: unified Debian payload/checksums, migration metadata, license notices, complete source and clean Rust builds.")

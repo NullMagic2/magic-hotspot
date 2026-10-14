@@ -1,7 +1,7 @@
 # Magic Hotspot
 
 A compact Rust/GTK3 app for connecting Linux to an iPhone hotspot over USB,
-saved Wi-Fi or Bluetooth PAN. **Current release: 0.2.23.**
+saved Wi-Fi or Bluetooth PAN. **Current release: 0.2.24.**
 
 - Nearby-device discovery with Connect and Disconnect controls.
 - Blue Wi-Fi tray icon and optional login startup.
@@ -17,15 +17,16 @@ and profiles. The iPhone must have Cellular Data and Personal Hotspot enabled.
 ## Install
 
 Download the `.deb` from [Releases](https://github.com/NullMagic2/magic-hotspot/releases).
-The tested binary targets **Ubuntu 26.04 amd64**.
+Packages target **Ubuntu 24.04/26.04, Debian 13, and Mint 22.x amd64**.
+See [PACKAGING.md](PACKAGING.md) for build environments and test scope.
 
 ```sh
-sudo apt install ./magic-hotspot_0.2.23-1ubuntu26.04_amd64.deb
+sudo apt install ./magic-hotspot_0.2.24-1ubuntu26.04_amd64.deb
 magic-hotspot --show
 ```
 
-The single package includes the app, iPhone USB helper, `magic-usb` 0.1.2 and
-shared CSR client 1.1.1. Driver service startup remains an explicit choice.
+The single package includes the app, iPhone USB helper, `magic-usb` 0.1.3 and
+shared CSR client 1.1.2. Driver service startup remains an explicit choice.
 
 ## Build from source
 
@@ -71,9 +72,11 @@ For detailed implementation notes, see [ARCHITECTURE.md](ARCHITECTURE.md) and
 Magic Hotspot's own application code is **MIT licensed**; see [LICENSE](LICENSE).
 Third-party components and the existing driver retain their licenses:
 
-- `magic-usb/`: GPL-2.0-only, including the shared CSR client.
-- `vendor/usbmuxd-1.1.1/`: upstream GPL-2.0-or-3.0 terms; see its COPYING files.
+- `magic-usb/`: MIT, including the shared CSR client.
+- `vendor/usbmuxd-1.1.2/`: upstream GPL-2.0-or-3.0 terms; see its COPYING files.
 - `assets/fluent/`: Microsoft Fluent System Icons, MIT.
 
 The GPL USB engine is built as a separate executable. All bundled corresponding
 source and notices are included.
+
+Distribution builds and standalone driver package details: [PACKAGING.md](PACKAGING.md).

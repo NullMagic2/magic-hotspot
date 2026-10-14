@@ -18,23 +18,21 @@ for tool in dpkg-deb dpkg-shlibdeps dpkg readelf gzip md5sum sha256sum; do
     fi
 done
 
-# Symbol versions must come from the release this package targets.
-if ! [ -r /etc/os-release ]; then
-    printf '%s\n' 'Package on Ubuntu 26.04 so its library dependencies match the target.' >&2
-    exit 1
-fi
+# Resolve dependencies against the actual build distribution, never rename
+# binaries from a newer libc as if they were built for an older distribution.
 source /etc/os-release
-if [[ "${ID:-}" != ubuntu || "${VERSION_ID:-}" != 26.04 ]]; then
-    printf '%s\n' 'Package on Ubuntu 26.04 so its library dependencies match the target.' >&2
-    exit 1
-fi
+BUILD_TARGET="${PACKAGE_TARGET:-${ID}${VERSION_ID}}"
+case "$ID:$VERSION_ID:$BUILD_TARGET" in
+    ubuntu:24.04:ubuntu24.04|ubuntu:24.04:mint22|ubuntu:26.04:ubuntu26.04|debian:13:debian13|linuxmint:22*:mint22) ;;
+    *) printf 'Unsupported host/target: %s %s / %s\n' "$ID" "$VERSION_ID" "$BUILD_TARGET" >&2; exit 1 ;;
+esac
 if [[ ! -x "$APP_BINARY" || ! -x "$USB_BINARY" || ! -x "$TRANSPORT_BINARY" || ! -x "$CSR_BINARY" ]]; then
     printf '%s\n' 'Build the executable first with ./build.sh.' >&2
     exit 1
 fi
 
 APP_VERSION="$(awk -F '"' '/^version = "/ { print $2; exit }' "$PROJECT_DIR/Cargo.toml")"
-DEB_VERSION="${APP_VERSION}-1ubuntu26.04"
+DEB_VERSION="${APP_VERSION}-1${BUILD_TARGET}"
 dpkg --validate-version "$DEB_VERSION"
 DEB_ARCH="$(dpkg --print-architecture)"
 ELF_MACHINE="$(LC_ALL=C readelf -h "$APP_BINARY" | awk -F ': *' '/Machine:/ { print $2 }')"
@@ -82,7 +80,7 @@ install -m 0644 "$PROJECT_DIR/vendor/usbmuxd-1.1.1/COPYING.GPLv3" "$DOC_DIR/USB-
     printf '\nMicrosoft Fluent System Icons included in Magic Hotspot.\n\n'
     printf '%s\n\n' 'Source: https://github.com/microsoft/fluentui-system-icons'
     cat "$PROJECT_DIR/assets/fluent/LICENSE.txt"
-    printf "\nMagic USB and shared CSR client: GPL-2.0-only.\n"
+    printf "\nMagic USB and shared CSR client: MIT.\n"
     cat "$PROJECT_DIR/magic-usb/COPYING"
     printf '\nUSB backend: modified usbmuxd 1.1.1 (GPL-2.0-or-3.0).\nSource: https://github.com/libimobiledevice/usbmuxd\nCorresponding source is included in Magic-Hotspot.zip.\n'
 } > "$DOC_DIR/copyright"
@@ -118,7 +116,7 @@ Maintainer: Magic Hotspot Project <noreply@localhost>
 Installed-Size: $INSTALLED_SIZE
 Conflicts: magic-usb
 Replaces: magic-usb
-Depends: $LIBRARY_DEPENDS, network-manager, bluez, librsvg2-common, usbmuxd, ipheth-utils, python3, libimobiledevice-1.0-6, polkitd, systemd, iproute2, kmod
+Depends: $LIBRARY_DEPENDS, network-manager, bluez, librsvg2-common, usbmuxd, ipheth-utils, python3, libimobiledevice-1.0-6 | libimobiledevice6, polkitd, systemd, iproute2, kmod
 Description: Compact GTK3 iPhone hotspot and Wi-Fi helper
  Connect by iPhone USB, saved Wi-Fi or Bluetooth PAN, browse nearby devices,
  and optionally keep the application in the desktop tray.
@@ -129,7 +127,7 @@ PACKAGE_EPOCH="${SOURCE_DATE_EPOCH:-$(stat -c %Y "$APP_BINARY")}"
 export SOURCE_DATE_EPOCH="$PACKAGE_EPOCH"
 CHANGELOG_DATE="$(TZ=America/Sao_Paulo date --date="@$PACKAGE_EPOCH" -R)"
 cat > "$DOC_DIR/changelog.Debian" <<CHANGELOG
-magic-hotspot ($DEB_VERSION) resolute; urgency=medium
+magic-hotspot ($DEB_VERSION) ${VERSION_CODENAME:-stable}; urgency=medium
 
   * Wait for adapter swaps on the selected USB port and retry with bounded backoff.
   * Read cached USB configuration before CSR reset to recover stalled adapters.
@@ -153,6 +151,6 @@ dpkg-deb --root-owner-group --build "$PAYLOAD_DIR" "$DEB_FILE"
     cd "$PROJECT_DIR/outputs"
     sha256sum "$(basename -- "$DEB_FILE")" > "$(basename -- "$DEB_FILE").sha256"
 )
-printf 'Ubuntu 26.04 package: %s\n' "$DEB_FILE"
+printf 'Distribution package: %s\n' "$DEB_FILE"
 
 python3 "$PROJECT_DIR/archive_source.py"

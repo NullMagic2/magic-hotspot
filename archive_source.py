@@ -12,7 +12,7 @@ version = tomllib.loads((root / "Cargo.toml").read_text())["package"]["version"]
 out = root / "outputs"
 out.mkdir(exist_ok=True)
 archive = out / f"Magic-Hotspot-{version}-source.zip"
-folders = ("src", "tests", "assets", "packaging", "gnome", "vendor", "magic-usb", "docs")
+folders = ("src", "tests", "assets", "packaging", "gnome", "vendor", "magic-usb", "docs", ".github")
 excluded = {"target", "work", "outputs", "__pycache__", ".git"}
 files = [p for p in root.iterdir() if p.is_file() and not p.is_symlink()]
 for folder in folders:
