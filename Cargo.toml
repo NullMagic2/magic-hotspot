@@ -1,0 +1,18 @@
+[package]
+name = "magic-hotspot"
+version = "0.2.23"
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/NullMagic2/magic-hotspot"
+rust-version = "1.85"
+description = "A small GTK3 helper for switching to a saved iPhone hotspot"
+
+[[bin]]
+name = "magic-hotspot"
+path = "src/main.rs"
+
+[dependencies]
+gtk = "0.18"
+glib = "0.18"
+gdk-pixbuf = "0.18"
+tempfile = "3.27"

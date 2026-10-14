@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+case "$1" in
+    remove|deconfigure)
+        if [ -d /run/systemd/system ]; then
+            # Stop before removing the executable needed by ExecStopPost restoration.
+            systemctl stop 'magic-usb@*.service'
+        fi
+        ;;
+esac
+case "$1" in
+    remove|deconfigure|upgrade)
+        if [ -d /run/systemd/system ]; then
+            systemctl stop magic-hotspot-usb.service || true
+            /usr/bin/python3 -I /usr/libexec/magic-hotspot-usb-helper --restore
+        fi
+        ;;
+esac
+exit 0

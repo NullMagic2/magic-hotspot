@@ -1,0 +1,7 @@
+{
+  "uuid": "magic-hotspot@local",
+  "name": "Magic Hotspot tray placement",
+  "description": "Position Magic Hotspot beside its native panel indicator.",
+  "shell-version": ["50"],
+  "version": 1
+}

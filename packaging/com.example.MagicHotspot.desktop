@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Magic Hotspot
+GenericName=Hotspot Connection Helper
+Comment=Connect to your saved iPhone hotspot and Wi-Fi networks
+Exec=magic-hotspot
+TryExec=magic-hotspot
+Icon=magic-hotspot
+Terminal=false
+StartupNotify=false
+StartupWMClass=magic-hotspot
+Categories=Network;GTK;

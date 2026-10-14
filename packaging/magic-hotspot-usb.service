@@ -1,0 +1,26 @@
+[Unit]
+Description=Magic Hotspot iPhone USB authentication and recovery
+After=polkit.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 -I /usr/libexec/magic-hotspot-usb-helper
+ExecStopPost=/usr/bin/python3 -I /usr/libexec/magic-hotspot-usb-helper --restore
+TimeoutStartSec=90
+TimeoutStopSec=20
+KillMode=mixed
+RuntimeDirectory=magic-hotspot-usb
+RuntimeDirectoryMode=0755
+RuntimeDirectoryPreserve=yes
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/run/systemd/system /run/magic-hotspot-usb /var/lib/lockdown /sys/bus/usb/drivers/ipheth
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_DAC_OVERRIDE CAP_SETUID CAP_SETGID CAP_KILL
+RestrictAddressFamilies=AF_UNIX AF_NETLINK
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+SystemCallFilter=~@mount @reboot @swap @module @raw-io @obsolete

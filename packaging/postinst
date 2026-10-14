@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+if [ "$1" = configure ] && [ -d /run/systemd/system ]; then
+    if [ ! -d /var/lib/lockdown ]; then
+        install -d -m 0755 /var/lib/lockdown
+    fi
+    systemctl daemon-reload
+    # UI-only updates must not interrupt Bluetooth on the selected adapter.
+    systemctl list-units --no-legend --plain --state=active 'magic-usb@*.service' |
+        while read -r unit rest; do
+            pid=$(systemctl show "$unit" -p MainPID --value)
+            if [ "$pid" -gt 0 ] && ! cmp -s "/proc/$pid/exe" /usr/bin/magic-usb; then
+                systemctl try-restart "$unit"
+            fi
+        done
+fi
+exit 0
