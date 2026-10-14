@@ -27,7 +27,7 @@ jobs:
       - name: Install build prerequisites
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends git ca-certificates curl build-essential pkg-config dpkg-dev binutils gzip python3 libusb-1.0-0-dev libzstd-dev libgtk-3-dev libplist-dev desktop-file-utils
+          apt-get install -y --no-install-recommends git ca-certificates curl build-essential pkg-config dpkg-dev binutils gzip python3 libusb-1.0-0-dev libzstd-dev libgtk-3-dev libayatana-appindicator3-dev libdbusmenu-gtk3-dev libplist-dev desktop-file-utils
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - name: Install pinned Rust toolchain
         shell: bash

@@ -33,7 +33,7 @@ shared CSR client 1.1.2. Driver service startup remains an explicit choice.
 Install Rust/Cargo and the GTK3, libusb, libplist and packaging build tools:
 
 ```sh
-sudo apt install build-essential pkg-config libgtk-3-dev libusb-1.0-0-dev libplist-dev libzstd-dev dpkg-dev python3
+sudo apt install build-essential pkg-config libgtk-3-dev libayatana-appindicator3-dev libdbusmenu-gtk3-dev libusb-1.0-0-dev libplist-dev libzstd-dev dpkg-dev python3
 cargo fetch --locked
 ./build.sh
 ```

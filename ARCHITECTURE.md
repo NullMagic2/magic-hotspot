@@ -133,7 +133,7 @@ magic-hotspot/
 │   ├── clients/csr8510/ CSR client using the same library
 │   ├── tests/           Transport/firmware/ownership unit tests
 │   ├── packaging/       magic-usb@.service installed by the parent package
-│   ├── COPYING          GPL-2.0-only license
+│   ├── COPYING          MIT license
 │   └── build.sh         Test and build clients; no separate .deb
 ├── assets/fluent/       Embedded official Microsoft Fluent System Icons and MIT license
 ├── assets/dialog-information.svg  Approved information artwork, shared 64px viewport

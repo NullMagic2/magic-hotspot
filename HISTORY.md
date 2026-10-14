@@ -176,3 +176,5 @@ manual disconnects and unrelated errors; no adapter, BlueZ or pairing reset.
 UB500 Bluetooth Internet was verified over IPv4/IPv6 after restarting the iPhone.
 
 - 0.2.23: magic-usb 0.1.2 and shared CSR client 1.1.1 read validated cached USB descriptors before ownership transfer/reset. The selected-port service waits through unplugging and unsupported devices, with restart backoff instead of permanent start-limit failure.
+
+- 0.2.24: MIT licensing for authored shared drivers; standalone CSR 1.1.2 and TP-Link 0.1.3 packages; distro-derived Ubuntu 24.04/26.04, Debian 13 and Ubuntu-base Mint 22 packages. GPL usbmuxd licensing retained.

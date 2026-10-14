@@ -124,7 +124,7 @@ Runtime requirements are GTK3, NetworkManager (`nmcli`) and
 `build.sh` creates the GUI, iPhone USB engine and the two clients under
 `magic-usb/bin/`, then saves one Magic Hotspot `.deb` and complete source ZIP in
 `outputs/`. `package.sh` can repackage those existing executables without recompiling.
-The source ZIP includes `magic-usb/` and its GPL license, tests and shared CSR code.
+The source ZIP includes `magic-usb/` and its MIT license, tests and shared CSR code.
 Native amd64 and arm64 packaging are supported; arm64 needs an arm64 Ubuntu 26.04 build.
 Cleanup removes build intermediates and retains the executables, `.deb` and source.
 The executable embeds its icons and can be moved before enabling login startup.
